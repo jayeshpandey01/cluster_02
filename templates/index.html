@@ -3365,57 +3365,23 @@
         // Find the card element for progress display
         const cardEl = (cardIdx !== undefined) ? document.getElementById(`card-${cardIdx}`) : null;
 
-        // ── Layer 2a: iOS Safari — use Web Share API ──────────────────────────
-        if (isIOSSafari() && navigator.canShare) {
-          // Show immediate feedback
-          if (cardEl) setCardBtnState(cardEl, 'downloading', '⏳ Preparing…');
-          showIOSToast('📥 Fetching video… please wait', 30000);
-
-          try {
-            // Fetch the video as a blob through our proxy (adds correct headers)
-            const resp = await fetch(proxyUrl);
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-
-            const blob = await resp.blob();
-
-            // Determine MIME type for the File object
-            const mimeType = blob.type || 'video/mp4';
-            const file = new File([blob], fname, { type: mimeType });
-
-            // Check if this device/browser can share files
-            if (navigator.canShare({ files: [file] })) {
-              if (cardEl) setCardBtnState(cardEl, 'done', '✅ Ready');
-              showIOSToast('📤 Tap "Save Video" or "Save to Files" in the share sheet below!', 8000);
-
-              // Share ONLY the file (do NOT include title/text/url — iOS ignores file if mixed)
-              await navigator.share({ files: [file] });
-
-              // Success
-              if (cardEl) setCardBtnState(cardEl, 'done', '✅ Saved!');
-              showIOSToast('✅ Saved to your device!', 3000);
-              return;
-            }
-          } catch (err) {
-            // AbortError = user cancelled the share sheet — that's fine
-            if (err && err.name === 'AbortError') {
-              if (cardEl) setCardBtnState(cardEl, 'done', '📤 Save to Phone');
-              showIOSToast('Share cancelled. Tap the button again to retry.', 4000);
-              return;
-            }
-            // Other error → fall through to Layer 2b
-            console.warn('Web Share API failed, falling back:', err);
-          }
-
-          // ── Layer 2b: iOS fallback — open proxy URL (Content-Disposition handles it) ──
+        // ── Layer 2: Mobile Browsers (iOS Safari, iOS Chrome, Android browsers) ──
+        if (isMobileDevice()) {
           if (cardEl) setCardBtnState(cardEl, 'done', '📤 Save to Phone');
-          showIOSToast('⬇️ Opening download… tap "Download" if prompted, then find it in Files app.', 6000);
-          window.open(proxyUrl, '_blank');
-          return;
-        }
-
-        // ── Layer 2b (also): iOS Chrome / other iOS browsers ─────────────────
-        if (isMobileDevice() && !isIOSSafari()) {
-          window.open(proxyUrl, '_blank');
+          
+          if (isIOSSafari()) {
+            showIOSToast('⬇️ Opening download… tap "Download" if prompted, then find it in Files app.', 6000);
+          } else {
+            showIOSToast('⬇️ Download starting...', 3000);
+          }
+          
+          // Synchronous anchor click completely bypasses Safari popup blockers
+          const a = document.createElement('a');
+          a.href = proxyUrl;
+          a.download = fname;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
           return;
         }
 
