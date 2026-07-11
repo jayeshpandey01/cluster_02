@@ -1,0 +1,18 @@
+# Ignore everything by default
+*
+
+# Exclude directories we need
+!/templates/
+!/templates/**
+!/static/
+!/static/**
+!/api/
+!/api/**
+
+# Exclude necessary root files
+!/.gitignore
+!/vercel.json
+!/README.md
+
+# Make sure .git is ignored explicitly
+.git/
