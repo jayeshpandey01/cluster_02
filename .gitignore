@@ -1,6 +1,6 @@
 # Ignore everything by default
 *
-
+cobalt/
 # Exclude directories we need
 !/templates/
 !/templates/**
@@ -15,4 +15,4 @@
 !/README.md
 
 # Make sure .git is ignored explicitly
-.git/
+.git/
