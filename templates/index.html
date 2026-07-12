@@ -1445,14 +1445,196 @@
       color: var(--accent);
     }
 
-    .footer {
-      margin-top: 80px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-light);
-      line-height: 2;
+    /* Site Footer Styling */
+    .site-footer {
+      background-color: #070913;
       border-top: 1px solid var(--border);
-      padding-top: 40px;
+      padding: 64px 0 32px 0;
+      margin-top: 80px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .footer-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1.2fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .brand-col {
+      max-width: 360px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+
+    .logo-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+      color: var(--white);
+    }
+
+    .logo-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .logo-text-gradient {
+      font-weight: 800;
+      font-size: 22px;
+      background: linear-gradient(45deg, #833ab4, #E1306C, #F77737);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-text-white {
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--white);
+    }
+
+    .footer-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .footer-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all var(--transition);
+    }
+
+    .footer-pill-btn:hover {
+      border-color: var(--secondary);
+      color: var(--white);
+      background: rgba(236, 72, 153, 0.05);
+    }
+
+    .footer-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .footer-links li {
+      display: block;
+    }
+
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all var(--transition);
+    }
+
+    .footer-links a svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.5;
+      transition: opacity var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    .footer-links a:hover svg {
+      opacity: 0.9;
+      color: var(--secondary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .footer-bottom .copyright {
+      text-align: left;
+    }
+
+    .footer-bottom .disclaimer {
+      text-align: right;
+    }
+
+    /* Mobile Footer Layout */
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      
+      .brand-col {
+        max-width: 100%;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .footer-bottom .copyright,
+      .footer-bottom .disclaimer {
+        text-align: center;
+      }
     }
 
     /* Hamburger & Mobile nav button rules */
@@ -1648,8 +1830,8 @@
     .step-index { font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-right: 25px; line-height: 1; opacity: 0.8; font-family: monospace; }
     .step-text strong { display: block; font-size: 1.2rem; color: var(--white); margin-bottom: 6px; }
     .step-text { color: var(--text-muted); }
-    .process-step-media { flex: 0.8; max-width: 320px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
-    .process-step-media img { width: 100%; height: auto; display: block; object-fit: cover; }
+    .process-step-media { flex: 0.8; max-width: 320px; height: 280px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); display: flex; }
+    .process-step-media img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: top; }
     @media (max-width: 768px) {
       .process-step, .process-step:nth-child(even) { flex-direction: column; align-items: stretch; gap: 20px; }
       .process-step-media { max-width: 100%; }
@@ -2382,19 +2564,103 @@
       </div>
     </div>
 
-    <div class="footer">
-      <div style="margin-bottom: 8px;">
-        <a href="/" onclick="navigate(event, '/')" style="color: inherit; text-decoration: none;">Instagram Reels Downloader</a> &middot; 
-        <a href="/instagram-video-downloader" onclick="navigate(event, '/instagram-video-downloader')" style="color: inherit; text-decoration: none;">Instagram Video Downloader</a> &middot; 
-        <a href="/instagram-photo-downloader" onclick="navigate(event, '/instagram-photo-downloader')" style="color: inherit; text-decoration: none;">Instagram Photo Downloader</a> &middot; 
-        <a href="/download-instagram-stories" onclick="navigate(event, '/download-instagram-stories')" style="color: inherit; text-decoration: none;">Instagram Story Downloader</a><br>
-        <a href="/profile-picture-downloader" onclick="navigate(event, '/profile-picture-downloader')" style="color: inherit; text-decoration: none;">Instagram DP Downloader</a> &middot; 
-        <!-- <a href="/instagram-audio-downloader" onclick="navigate(event, '/instagram-audio-downloader')" style="color: inherit; text-decoration: none;">Instagram Audio Downloader</a> &middot; -->
-        <a href="/download-instagram-private-reels" onclick="navigate(event, '/download-instagram-private-reels')" style="color: inherit; text-decoration: none;">Instagram Private Reels Downloader</a> &middot; 
-        <a href="/youtube-video-downloader" onclick="navigate(event, '/youtube-video-downloader')" style="color: inherit; text-decoration: none;">YouTube Video Downloader</a>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <!-- Brand / Info Column -->
+        <div class="footer-col brand-col">
+          <a href="/" onclick="navigate(event, '/')" class="footer-logo" aria-label="InstantReelsDownload Home">
+            <span class="logo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </span>
+            <span class="logo-text-gradient">InstantReels</span><span class="logo-text-white">Download</span>
+          </a>
+          <p class="footer-desc">
+            Free Instagram downloader for Reels, Videos, Photos, Stories & Audio — no login, no watermark.
+          </p>
+          <a href="/" onclick="navigate(event, '/')" class="footer-pill-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 4px;">
+              <path d="M11.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.95 1.11 2.27 1.84 3.7 2.11v3.91c-1.42-.04-2.82-.41-4.04-1.15-.47-.28-.9-.62-1.28-1.01V15.5c0 1.25-.26 2.5-.78 3.65-.96 2.06-2.91 3.59-5.17 3.99-1.92.34-3.92-.09-5.54-1.18-1.93-1.32-3.11-3.52-3.11-5.89 0-2.31 1.12-4.52 3.01-5.84 1.53-1.07 3.42-1.53 5.27-1.26v4.06c-1.02-.19-2.1.06-2.91.73-.89.73-1.39 1.85-1.35 2.99.04 1.14.61 2.21 1.53 2.87.97.69 2.21.84 3.32.39.73-.3 1.34-.87 1.71-1.58.26-.52.37-1.09.37-1.68V.02z"/>
+            </svg>
+            TikTok Downloader Without Watermark
+          </a>
+        </div>
+
+        <!-- Our Tools Column -->
+        <div class="footer-col">
+          <h4 class="footer-title">Our Tools</h4>
+          <ul class="footer-links">
+            <li>
+              <a href="/" onclick="navigate(event, '/')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Reels Downloader
+              </a>
+            </li>
+            <li>
+              <a href="/instagram-video-downloader" onclick="navigate(event, '/instagram-video-downloader')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                Video Downloader
+              </a>
+            </li>
+            <li>
+              <a href="/instagram-photo-downloader" onclick="navigate(event, '/instagram-photo-downloader')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                Photo Downloader
+              </a>
+            </li>
+            <li>
+              <a href="/download-instagram-stories" onclick="navigate(event, '/download-instagram-stories')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Story Downloader
+              </a>
+            </li>
+            <li>
+              <a href="/profile-picture-downloader" onclick="navigate(event, '/profile-picture-downloader')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                DP Downloader
+              </a>
+            </li>
+            <li>
+              <a href="/instagram-audio-downloader" onclick="navigate(event, '/instagram-audio-downloader')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                Audio Downloader
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="/about" onclick="navigate(event, '/about')">About Us</a></li>
+            <li><a href="/privacy-policy" onclick="navigate(event, '/privacy-policy')">Privacy Policy</a></li>
+            <li><a href="/privacy-policy" onclick="navigate(event, '/privacy-policy')">Terms of Service</a></li>
+            <li><a href="/contact" onclick="navigate(event, '/contact')">Contact</a></li>
+            <li>
+              <a href="mailto:Instantreelsdownload@gmail.com" class="email-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Instantreelsdownload@gmail.com
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-      InstantReelsDownload &middot; <a href="/privacy-policy" onclick="navigate(event, '/privacy-policy')" style="color: inherit; text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,0.3);">Privacy Policy</a> &middot; All Rights Reserved
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div class="copyright">
+          © 2026 InstantReelsDownload.com — All rights reserved.
+        </div>
+        <div class="disclaimer">
+          Not affiliated with Instagram™ or Meta Platforms, Inc.
+        </div>
+      </div>
     </div>
+  </footer>
   </div>
 
   <!-- iOS Share Toast (shown when Web Share API is triggered) -->
