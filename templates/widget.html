@@ -318,6 +318,24 @@
       document.documentElement.style.setProperty('--grad-btn', `linear-gradient(135deg, ${accent} 0%, #EC4899 100%)`);
     }
 
+    let API_BASE_URL = '';
+    async function initEnvironment() {
+      try {
+        const res = await fetch('/api/env');
+        if (res.ok) {
+          const data = await res.json();
+          API_BASE_URL = data.API_BASE_URL || '';
+          if (API_BASE_URL && API_BASE_URL.endsWith('/')) {
+            API_BASE_URL = API_BASE_URL.slice(0, -1);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load environment variables', e);
+      }
+    }
+    // Initialize env variables
+    initEnvironment();
+
     async function fetchMedia() {
       const urlInput = document.getElementById('widget-url');
       const btn = document.getElementById('widget-btn');
@@ -334,7 +352,7 @@
       btn.innerHTML = '<span class="spin"></span> <span>Fetching...</span>';
 
       try {
-        const response = await fetch('/api/cobalt', {
+        const response = await fetch(API_BASE_URL + '/api/cobalt', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -342,9 +360,14 @@
           body: JSON.stringify({ url: url })
         });
         
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Server returned error (${response.status}). Please try again.`);
+        }
+        
         const data = await response.json();
         
-        if (!response.ok || data.status === 'error' || !data.url) {
+        if (data.status === 'error' || !data.url) {
           throw new Error(data.text || 'Failed to fetch video. Ensure link is public.');
         }
 
@@ -354,7 +377,7 @@
           : (data.url || '');
         
         // Handle direct proxy URL or standard URL
-        const streamUrl = `/api/stream?url=${encodeURIComponent(data.url)}&filename=instagram_reel.mp4`;
+        const streamUrl = API_BASE_URL + `/api/stream?url=${encodeURIComponent(data.url)}&filename=instagram_reel.mp4`;
         const downloadBtn = document.getElementById('result-btn');
         downloadBtn.href = streamUrl;
         
