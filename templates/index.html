@@ -1313,6 +1313,23 @@
       white-space: nowrap;
     }
 
+    .admin-blog-title-link {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      text-decoration: none;
+      transition: color var(--transition);
+      display: block;
+      margin-bottom: 6px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .admin-blog-title-link:hover {
+      color: var(--secondary);
+    }
+
     .admin-blog-meta {
       font-size: 12px;
       color: var(--text-muted);
@@ -3065,10 +3082,11 @@
             return `
             <div class="admin-blog-row">
               <div class="admin-blog-info">
-                <div class="admin-blog-title">${esc(post.title)}</div>
+                <a href="/blog/${post.slug}" onclick="navigate(event, '/blog/${post.slug}')" class="admin-blog-title-link" title="Click to view post">${esc(post.title)}</a>
                 <div class="admin-blog-meta">${esc(post.category)} · ${esc(post.date)}</div>
               </div>
               <div class="admin-blog-actions">
+                <a href="/blog/${post.slug}" onclick="navigate(event, '/blog/${post.slug}')" class="pill" style="text-decoration:none;display:inline-flex;align-items:center;background:rgba(255,255,255,0.05);color:var(--white);">View</a>
                 <button class="pill" onclick='editBlogPost(${jsonStr})'>Edit</button>
                 <button class="pill active" style="background:var(--error);border-color:var(--error);color:white;" onclick="deleteBlogPost('${post.id}')">Delete</button>
               </div>
