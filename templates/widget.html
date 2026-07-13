@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reels Downloader Widget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #7C3AED;
+      --secondary: #EC4899;
+      --primary-glow: rgba(124, 58, 237, 0.3);
+      --secondary-glow: rgba(236, 72, 153, 0.3);
+      
+      --bg: #070913;
+      --bg-glow: radial-gradient(circle at 50% -20%, rgba(124, 58, 237, 0.15) 0%, rgba(7, 9, 19, 0) 60%);
+      --bg-card: rgba(15, 18, 36, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --text-light: #6B7280;
+      --white: #FFFFFF;
+      --error: #EF4444;
+      
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --grad-btn: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      background-image: var(--bg-glow);
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* Light Theme override */
+    body.theme-light {
+      --bg: #F9FAFB;
+      --bg-glow: none;
+      --bg-card: #FFFFFF;
+      --border: rgba(0, 0, 0, 0.08);
+      --text: #111827;
+      --text-muted: #4B5563;
+      --text-light: #9CA3AF;
+      --white: #000000;
+    }
+
+    .widget-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all var(--transition);
+    }
+
+    .widget-header {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .widget-header svg {
+      width: 18px;
+      height: 18px;
+      color: var(--secondary);
+    }
+
+    .input-row {
+      display: flex;
+      background: rgba(15, 18, 36, 0.9);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition);
+    }
+
+    .input-row:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    body.theme-light .input-row {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .url-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--white);
+      padding: 10px 8px;
+      min-width: 0;
+    }
+
+    .url-input::placeholder {
+      color: var(--text-light);
+    }
+
+    .btn-action {
+      background: var(--grad-btn);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px var(--primary-glow);
+      transition: all var(--transition);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px var(--primary-glow);
+    }
+
+    .btn-action:active {
+      transform: translateY(0);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Result Card */
+    .result-card {
+      display: none;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: left;
+      margin-top: 8px;
+      animation: slideUp 0.3s ease-out forwards;
+    }
+
+    body.theme-light .result-card {
+      background: rgba(0, 0, 0, 0.01);
+    }
+
+    .result-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #0f1224;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .result-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .result-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .result-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-dl {
+      background: var(--secondary);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition);
+      text-align: center;
+    }
+
+    .btn-dl:hover {
+      opacity: 0.9;
+    }
+
+    .error-msg {
+      display: none;
+      font-size: 12px;
+      color: var(--error);
+      margin-top: 6px;
+    }
+
+    .spin {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #ffffff;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="widget-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <span>Instagram Reels Downloader</span>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="widget-url" class="url-input" placeholder="Paste Instagram Reels link..." autocomplete="off">
+    </div>
+
+    <button id="widget-btn" class="btn-action" onclick="fetchMedia()">
+      <span>Download</span>
+    </button>
+
+    <div id="widget-error" class="error-msg"></div>
+
+    <div id="widget-result" class="result-card">
+      <img id="result-img" class="result-thumb" src="" alt="Thumbnail">
+      <div class="result-info">
+        <div id="result-title" class="result-title">Reel Media</div>
+        <div class="result-meta">Ready for download</div>
+      </div>
+      <a id="result-btn" class="btn-dl" target="_blank" download>Save</a>
+    </div>
+  </div>
+
+  <script>
+    // Customize styles based on URL query parameters
+    const params = new URLSearchParams(window.location.search);
+    
+    // Theme Option (light / dark)
+    const theme = params.get('theme');
+    if (theme === 'light') {
+      document.body.classList.add('theme-light');
+    }
+
+    // Custom Background Color
+    const bg = params.get('bg');
+    if (bg) {
+      document.documentElement.style.setProperty('--bg', bg);
+      if (bg === 'transparent' || bg !== '') {
+        document.body.style.backgroundImage = 'none';
+      }
+    }
+
+    // Custom Accent Color
+    const accent = params.get('accent');
+    if (accent) {
+      document.documentElement.style.setProperty('--primary', accent);
+      // Generate gradient
+      document.documentElement.style.setProperty('--grad-btn', `linear-gradient(135deg, ${accent} 0%, #EC4899 100%)`);
+    }
+
+    async function fetchMedia() {
+      const urlInput = document.getElementById('widget-url');
+      const btn = document.getElementById('widget-btn');
+      const errorDiv = document.getElementById('widget-error');
+      const resultDiv = document.getElementById('widget-result');
+      
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      // Reset states
+      errorDiv.style.display = 'none';
+      resultDiv.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spin"></span> <span>Fetching...</span>';
+
+      try {
+        const response = await fetch('/api/cobalt', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url: url })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok || data.status === 'error' || !data.url) {
+          throw new Error(data.text || 'Failed to fetch video. Ensure link is public.');
+        }
+
+        // Show result
+        document.getElementById('result-img').src = data.picker 
+          ? (data.picker[0]?.thumb || '') 
+          : (data.url || '');
+        
+        // Handle direct proxy URL or standard URL
+        const streamUrl = `/api/stream?url=${encodeURIComponent(data.url)}&filename=instagram_reel.mp4`;
+        const downloadBtn = document.getElementById('result-btn');
+        downloadBtn.href = streamUrl;
+        
+        resultDiv.style.display = 'flex';
+      } catch (err) {
+        errorDiv.textContent = err.message;
+        errorDiv.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Download</span>';
+      }
+    }
+  </script>
+</body>
+</html>

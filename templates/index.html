@@ -2457,8 +2457,52 @@
                   <div class="faq-a">Ans: No sign-ups are required. You can use our link conversion fields anonymously without supplying data trackers, emails, or account access privileges.</div>
               </div>
           </div>
+
+          <!-- Embed Widget Generator Section -->
+          <h2>Add Reels Downloader to Your Website</h2>
+          <p>You can embed this fast, watermark-free Reels downloader tool directly on your website or blog. Blogger domains that embed this tool will receive official direct download functionality for their users.</p>
+          
+          <div class="widget-generator-container" style="display: flex; flex-wrap: wrap; gap: 32px; margin: 30px 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 32px; text-align: left;">
+              <!-- Left side: Customizer options -->
+              <div style="flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 20px;">
+                  <h3 style="color: var(--white); font-size: 1.3rem; margin-top: 0; font-weight: 700;">1. Customize Widget Appearance</h3>
+                  
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                      <label style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Theme</label>
+                      <div class="pill-group" style="display: inline-flex; gap: 8px;">
+                          <button class="pill active" id="widget-theme-dark" onclick="updateWidgetPreview('theme', 'dark')" style="padding: 6px 16px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; cursor: pointer; transition: all var(--transition);">Dark</button>
+                          <button class="pill" id="widget-theme-light" onclick="updateWidgetPreview('theme', 'light')" style="padding: 6px 16px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; cursor: pointer; transition: all var(--transition);">Light</button>
+                      </div>
+                  </div>
+
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                      <label style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Accent Color</label>
+                      <div style="display: flex; gap: 10px; align-items: center;">
+                          <input type="color" id="widget-accent-picker" value="#7c3aed" oninput="updateWidgetPreview('accent', this.value)" style="border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; background: transparent;">
+                          <span id="widget-accent-val" style="font-size: 13px; font-family: monospace; color: var(--text-muted);">#7c3aed</span>
+                      </div>
+                  </div>
+
+                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <h3 style="color: var(--white); font-size: 1.3rem; font-weight: 700; margin-top: 10px;">2. Copy Embed Code</h3>
+                      <div style="position: relative;">
+                          <textarea id="widget-code-textarea" readonly style="width: 100%; min-height: 120px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; color: #a9b2c3; font-family: monospace; font-size: 12px; resize: none; outline: none; line-height: 1.5;"></textarea>
+                          <button class="btn-paste" onclick="copyWidgetCode(this)" style="position: absolute; right: 10px; bottom: 10px; padding: 6px 12px; font-size: 11px;">Copy Code</button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Right side: Preview of widget -->
+              <div style="flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center;">
+                  <h3 style="color: var(--white); font-size: 1.3rem; margin-top: 0; font-weight: 700; align-self: flex-start;">Live Preview</h3>
+                  <div style="width: 100%; max-width: 420px; border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 12px; background: rgba(255,255,255,0.01);">
+                      <iframe id="widget-preview-iframe" src="/widget?theme=dark&accent=%237c3aed" width="100%" height="260" style="border: none; border-radius: var(--radius-md); background: #070913;" scrolling="no"></iframe>
+                  </div>
+              </div>
+          </div>
       </div>
     </div>
+
 
     <!-- About Page -->
     <div id="section-about" class="tab-section" style="display: none;">
@@ -4121,6 +4165,61 @@
           window.location.href = proxyUrl;
         }
       }
+
+      // Widget Generator Logic
+      let widgetTheme = 'dark';
+      let widgetAccent = '#7c3aed';
+
+      function updateWidgetCodeText() {
+        const domain = window.location.origin;
+        const iframeSrc = `${domain}/widget?theme=${widgetTheme}&accent=${encodeURIComponent(widgetAccent)}`;
+        const code = `<div style="width: 100%; max-width: 500px; margin: 0 auto; text-align: center;">
+  <iframe src="${iframeSrc}" width="100%" height="280" style="border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: ${widgetTheme === 'light' ? '#ffffff' : '#070913'};" scrolling="no"></iframe>
+  <div style="font-size: 12px; margin-top: 8px; font-family: sans-serif; color: #9ca3af;">
+    Powered by <a href="${domain}" target="_blank" style="color: #ec4899; text-decoration: none; font-weight: 600;">InstantReelsDownload</a>
+  </div>
+</div>`;
+        const el = document.getElementById('widget-code-textarea');
+        if (el) el.value = code;
+      }
+
+      function updateWidgetPreview(type, val) {
+        if (type === 'theme') {
+          widgetTheme = val;
+          const darkBtn = document.getElementById('widget-theme-dark');
+          const lightBtn = document.getElementById('widget-theme-light');
+          if (darkBtn) darkBtn.classList.toggle('active', val === 'dark');
+          if (lightBtn) lightBtn.classList.toggle('active', val === 'light');
+        } else if (type === 'accent') {
+          widgetAccent = val;
+          const picker = document.getElementById('widget-accent-picker');
+          const valText = document.getElementById('widget-accent-val');
+          if (picker) picker.value = val;
+          if (valText) valText.textContent = val;
+        }
+
+        const iframe = document.getElementById('widget-preview-iframe');
+        if (iframe) iframe.src = `/widget?theme=${widgetTheme}&accent=${encodeURIComponent(widgetAccent)}`;
+        updateWidgetCodeText();
+      }
+
+      function copyWidgetCode(btn) {
+        const textarea = document.getElementById('widget-code-textarea');
+        if (!textarea) return;
+        textarea.select();
+        document.execCommand('copy');
+        
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.style.background = 'var(--success)';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+        }, 2000);
+      }
+
+      // Initialize the widget code box on page load
+      setTimeout(updateWidgetCodeText, 1000);
     </script>
 </body>
 
