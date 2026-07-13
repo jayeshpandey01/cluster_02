@@ -3826,22 +3826,56 @@
         const cardEl = (cardIdx !== undefined) ? document.getElementById(`card-${cardIdx}`) : null;
 
         // ── Layer 2: Mobile Browsers (iOS Safari, iOS Chrome, Android browsers) ──
+        // Safari iOS rejects long GET URLs (>2048 chars) through Cloudflare with
+        // HTTP 400. We use a token-based approach: POST the URL to the server,
+        // get back a short token, then navigate to a short /api/download-by-token/<token> URL.
         if (isMobileDevice()) {
-          if (cardEl) setCardBtnState(cardEl, 'done', '📤 Save to Phone');
-          
-          if (isIOSSafari()) {
-            showIOSToast('⬇️ Opening download… tap "Download" if prompted, then find it in Files app.', 6000);
-          } else {
-            showIOSToast('⬇️ Download starting...', 3000);
+          if (cardEl) setCardBtnState(cardEl, 'downloading', '⏳ Preparing...');
+
+          try {
+            // POST the download URL to get a short-lived token
+            const tokenRes = await fetch(API_BASE_URL + '/api/download-token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url: url, filename: fname })
+            });
+            const tokenData = await tokenRes.json();
+
+            if (!tokenData.token) throw new Error('No token returned');
+
+            const shortUrl = API_BASE_URL + '/api/download-by-token/' + tokenData.token;
+
+            if (isIOSSafari()) {
+              showIOSToast('⬇️ Opening download… tap "Download" if prompted, then find it in Files app.', 6000);
+            } else {
+              showIOSToast('⬇️ Download starting...', 3000);
+            }
+
+            // Synchronous anchor click with a short URL — won't be rejected by Cloudflare
+            const a = document.createElement('a');
+            a.href = shortUrl;
+            a.download = fname;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            if (cardEl) setCardBtnState(cardEl, 'done', '📤 Save to Phone');
+          } catch (err) {
+            console.error('Token-based download failed, falling back:', err);
+            // Fallback: try the direct proxy URL (may still fail on long URLs)
+            if (isIOSSafari()) {
+              showIOSToast('⬇️ Opening download… tap "Download" if prompted, then find it in Files app.', 6000);
+            } else {
+              showIOSToast('⬇️ Download starting...', 3000);
+            }
+            const a = document.createElement('a');
+            a.href = proxyUrl;
+            a.download = fname;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            if (cardEl) setCardBtnState(cardEl, 'done', '📤 Save to Phone');
           }
-          
-          // Synchronous anchor click completely bypasses Safari popup blockers
-          const a = document.createElement('a');
-          a.href = proxyUrl;
-          a.download = fname;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
           return;
         }
 
