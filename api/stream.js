@@ -10,7 +10,7 @@ export default async function handler(req) {
   if (!targetUrl) {
     return new Response('Missing url', { status: 400 });
   }
-
+ 
   try {
     const response = await fetch(targetUrl, {
       headers: {
