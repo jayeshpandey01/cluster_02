@@ -2,22 +2,31 @@
 <html lang="en">
 
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T47QV3MRKW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-T47QV3MRKW');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Advanced Google SEO Meta Configuration -->
-  <title>Instagram Reels Download & YouTube Video Downloader HD - Free</title>
-  <meta name="description" content="The fastest web-tool for Instagram Reels download, public IG videos, high-res photos, and YouTube video or Shorts downloading in Full HD. 100% Free, no watermark.">
+  <title>{{ title|default("Instagram Reels Download & YouTube Video Downloader HD - Free", true) }}</title>
+  <meta name="description" content="{{ description|default("Download Instagram Reels instantly with Instant Reels Download. Save public Reels in HD quality for free, no app or registration required. Fast, secure, and easy.", true) }}">
   <meta name="keywords" content="instagram reels download, download instagram reels, youtube video downloader, youtube shorts downloader, save instagram videos, free reels saver, download youtube shorts hd, instagram photo downloader">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://instantreelsdownload.com">
+  <link rel="canonical" href="{{ canonical_url|default("https://instantreelsdownload.com", true) }}">
 
   <!-- Open Graph (OG) Social Metadata -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Instagram Reels Download & YouTube Video Downloader HD">
-  <meta property="og:description" content="Extract clean media from Instagram and YouTube instantly without software installation or brand watermarks.">
-  <meta property="og:url" content="https://instantreelsdownload.com">
+  <meta property="og:title" content="{{ title|default("Instagram Reels Download & YouTube Video Downloader HD - Free", true) }}">
+  <meta property="og:description" content="{{ description|default("Download Instagram Reels instantly with Instant Reels Download. Save public Reels in HD quality for free, no app or registration required. Fast, secure, and easy.", true) }}">
+  <meta property="og:url" content="{{ canonical_url|default("https://instantreelsdownload.com", true) }}">
 
-  <link rel="icon" href="/static/logo.png" type="image/png">
+  <link rel="icon" href="/static/bg_logo.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2581,12 +2590,6 @@
           <p class="footer-desc">
             Free Instagram downloader for Reels, Videos, Photos, Stories & Audio — no login, no watermark.
           </p>
-          <a href="/" onclick="navigate(event, '/')" class="footer-pill-btn">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 4px;">
-              <path d="M11.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.95 1.11 2.27 1.84 3.7 2.11v3.91c-1.42-.04-2.82-.41-4.04-1.15-.47-.28-.9-.62-1.28-1.01V15.5c0 1.25-.26 2.5-.78 3.65-.96 2.06-2.91 3.59-5.17 3.99-1.92.34-3.92-.09-5.54-1.18-1.93-1.32-3.11-3.52-3.11-5.89 0-2.31 1.12-4.52 3.01-5.84 1.53-1.07 3.42-1.53 5.27-1.26v4.06c-1.02-.19-2.1.06-2.91.73-.89.73-1.39 1.85-1.35 2.99.04 1.14.61 2.21 1.53 2.87.97.69 2.21.84 3.32.39.73-.3 1.34-.87 1.71-1.58.26-.52.37-1.09.37-1.68V.02z"/>
-            </svg>
-            TikTok Downloader Without Watermark
-          </a>
         </div>
 
         <!-- Our Tools Column -->
@@ -2744,7 +2747,11 @@
         window._activeTabType = tabType;
 
         document.querySelectorAll('.hero-tab').forEach(el => el.classList.remove('active'));
-        const activeTab = document.getElementById(`tab-${tabType}`);
+        let activeTabId = `tab-${tabType}`;
+        if (['video_downloader', 'stories_downloader', 'dp_downloader', 'audio_downloader'].includes(tabType)) {
+          activeTabId = 'tab-reels';
+        }
+        const activeTab = document.getElementById(activeTabId);
         if (activeTab) activeTab.classList.add('active');
 
         const headings = {
@@ -2754,19 +2761,39 @@
             desc: 'Paste any Instagram Reels link and save it to your device in seconds — no login, no watermark, no app.'
           },
           'photo': {
-            title: 'Instagram Photo Downloader — Download Images',
+            title: 'Instagram Photo Downloader – Download Instagram Photos Free',
             heading: 'Instagram Photo Downloader',
             desc: 'Save photos and slides from Instagram posts in their original resolution and high quality.'
           },
           'youtube': {
-            title: 'YouTube Video Downloader — Fast HD',
+            title: 'YouTube Video Downloader – Download Videos Online Free',
             heading: 'YouTube Video Downloader',
             desc: 'Download videos from YouTube directly to your device in high definition.'
           },
           'shorts': {
-            title: 'YouTube Shorts Downloader — Fast HD',
+            title: 'YouTube Shorts Downloader – Download Shorts in HD Free Online',
             heading: 'YouTube Shorts Downloader',
             desc: 'Download YouTube Shorts videos directly to your device in high definition.'
+          },
+          'video_downloader': {
+            title: 'Instagram Video Downloader – Download Instagram Videos Free',
+            heading: 'Instagram Video Downloader',
+            desc: 'Download Instagram videos online in HD quality for free. Fast, secure, and easy-to-use Instagram video downloader, no app or registration required.'
+          },
+          'stories_downloader': {
+            title: 'Instagram Story Downloader – Download Stories & Highlights Free',
+            heading: 'Instagram Story Downloader',
+            desc: 'Download Instagram stories and highlights online for free in HD quality. Save public IG stories instantly on any device with no app required.'
+          },
+          'dp_downloader': {
+            title: 'Instagram Profile Picture Downloader – Save DP in HD Quality',
+            heading: 'Instagram DP Downloader',
+            desc: 'Download Instagram profile pictures in high resolution online. Save any public Instagram DP instantly to your phone or computer for free.'
+          },
+          'audio_downloader': {
+            title: 'Instagram Audio Downloader – Download Reels Audio & Music',
+            heading: 'Instagram Audio Downloader',
+            desc: 'Download Instagram audio and background music from Reels and videos online for free. Save high quality MP3 audio tracks instantly.'
           }
         };
 
@@ -2841,6 +2868,7 @@
         if (toggle) toggle.classList.remove('open');
 
         handleRoute();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
       function toggleMobileMenu() {
@@ -2885,6 +2913,14 @@
             selectDownloaderTab(null, 'youtube', path);
           } else if (path === '/youtube-shorts-downloader') {
             selectDownloaderTab(null, 'shorts', path);
+          } else if (path === '/instagram-video-downloader') {
+            selectDownloaderTab(null, 'video_downloader', path);
+          } else if (path === '/download-instagram-stories') {
+            selectDownloaderTab(null, 'stories_downloader', path);
+          } else if (path === '/profile-picture-downloader') {
+            selectDownloaderTab(null, 'dp_downloader', path);
+          } else if (path === '/instagram-audio-downloader') {
+            selectDownloaderTab(null, 'audio_downloader', path);
           } else {
             selectDownloaderTab(null, 'reels', '/');
           }
